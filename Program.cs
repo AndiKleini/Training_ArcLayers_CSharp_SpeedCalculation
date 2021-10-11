@@ -12,16 +12,8 @@ namespace SpeedCalculation
             int meter, seconds;
             ReadInput(out meter, out seconds);
 
-            float speed = GetSpeed(meter, seconds);
-
-            // persist calculation
-            Store(meter, seconds, speed);
-        }
-
-        private static void Store(int meter, int seconds, float speed)
-        {
-            String text = "Speed was calculated from distance-> " + meter + " m and time " + seconds + " secs " + "as " + speed;
-            File.WriteAllText("./output.txt", text);
+            var speedCalculation = GetCalculation();
+            speedCalculation.ProcessSpeedCalculation(meter, seconds);
         }
 
         private static void ReadInput(out int meter, out int seconds)
@@ -39,9 +31,9 @@ namespace SpeedCalculation
             }
         }
 
-        private static float GetSpeed(int meter, int seconds)
+        private static ISpeedCalculation GetCalculation()
         {
-            return (float)meter / (float)seconds;
+            return new SpeedCalculation(new FileStorage());
         }
     }
 }
