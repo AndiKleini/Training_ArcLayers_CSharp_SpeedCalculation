@@ -9,26 +9,39 @@ namespace SpeedCalculation
         {
             Console.WriteLine("Welcome to the speed calculator.");
 
+            int meter, seconds;
+            ReadInput(out meter, out seconds);
+
+            float speed = GetSpeed(meter, seconds);
+
+            // persist calculation
+            Store(meter, seconds, speed);
+        }
+
+        private static void Store(int meter, int seconds, float speed)
+        {
+            String text = "Speed was calculated from distance-> " + meter + " m and time " + seconds + " secs " + "as " + speed;
+            File.WriteAllText("./output.txt", text);
+        }
+
+        private static void ReadInput(out int meter, out int seconds)
+        {
             Console.WriteLine("Please enter the distance in meters.");
-            int meter;
             while (!int.TryParse(Console.ReadLine(), out meter))
             {
                 Console.WriteLine("Invalid input ... must be a number.");
             }
 
             Console.WriteLine("Please enter the time in seconds.");
-            int seconds;
             while (!int.TryParse(Console.ReadLine(), out seconds))
             {
                 Console.WriteLine("Invalid input ... must be a number.");
             }
+        }
 
-            // perform calculation
-            float speed = (float)meter / (float)seconds;
-
-            // persist calculation
-            String text = "Speed was calculated from distance-> " + meter + " m and time " + seconds + " secs " + "as " + speed;
-            File.WriteAllText("./output.txt", text);
+        private static float GetSpeed(int meter, int seconds)
+        {
+            return (float)meter / (float)seconds;
         }
     }
 }
